@@ -9,8 +9,10 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
 WORKDIR /app
 COPY ./src /app
 RUN bundle config --local set path 'vendor/bundle' \
-  && bundle install
-
+  && bundle install \
+  && yarn add @popperjs/core \
+  && yarn add @fortawesome/fontawesome-free \
+  && yarn add hammerjs
 COPY start.sh /start.sh
 RUN chmod 744 /start.sh
 CMD ["sh", "/start.sh"]

@@ -34,6 +34,9 @@ jobs:
       - run:
           name: Database setup
           command: bundle exec rails db:migrate
+      # - run:
+      #     name: Database setup
+      #     command: bundle exec  rails db:seed
       - run:
           name: test
           command: bundle exec rake test
@@ -58,6 +61,9 @@ jobs:
       - run:
           name: database setup
           command: heroku run bundle exec rake db:migrate RAILS_ENV=production -a $HEROKU_APP_NAME
+      # - run:
+      #     name: database seed
+      #     command: heroku run bundle exec rake db:seed RAILS_ENV=production -a $HEROKU_APP_NAME
 
 workflows:
   version: 2

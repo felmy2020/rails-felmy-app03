@@ -1,10 +1,29 @@
 class User < ApplicationRecord
   has_many :tweets, dependent: :destroy
-
+  has_many :reactions
+  has_many :chat_room_users
+  has_many :chat_rooms, through: :chat_room_users
+  has_many :chat_messages
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  validates :username, uniqueness: true, length: { in: 1..15 }
+  validates :username, uniqueness: true, length: { in: 1..15 }, presence: true
+   validates :self_introduction, length: { maximum: 500 }
+  enum gender: { man: 0, woman: 1 }
+
+  mount_uploader :profile_photo, ImageUploader
+
+  def update_without_current_password(params, *options)
+
+    if params[:password].blank? && params[:password_confirmation].blank?
+      params.delete(:password)
+      params.delete(:password_confirmation)
+    end
+
+    result = update!(params, *options)
+    clean_up_passwords
+    result
+  end
 
 end
